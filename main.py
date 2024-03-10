@@ -1,16 +1,25 @@
 import json
 import sys
 from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QGridLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel
+from PyQt6.QtCore import Qt
+
 
 class Window(QWidget):
     def __init__(self):
+        
         super().__init__()
 
         # Загружаем форму
         uic.loadUi('form.ui', self)
 
         self.fill_classic_pallete()
+
+        self.setFixedSize(self.sizeHint().width(), 600)
+
+        print(f"Size Policy: {self.sizePolicy()}")
+        print(f"Size Hint: {self.sizeHint()}")
+        print(f"Actual Size: {self.size()}")
 
 
     # Заполняем вкалдку цветами Classic
@@ -20,20 +29,20 @@ class Window(QWidget):
 
             ral_classic = json.loads(ral_data)
 
-            classic_grid = QGridLayout(self.Classic_tab)
-
-            # Количество столбцов
-            num_columns = 6
+            # Количество столбцов в сетке
+            NUM_COLUMNS = 6
 
             # Прохожу по словарю с RAL и создаю label
             for index, ral in enumerate(ral_classic):
-                label = QLabel(parent=self.Classic_tab)
+                label = QLabel(self.classic_scroll_widget)
                 label.setObjectName(ral["RAL"].replace(" ", ""))
-                row = index // num_columns
-                col = index % num_columns
+                row = index // NUM_COLUMNS
+                col = index % NUM_COLUMNS
                 label.setText(f"{ral['RAL']}\n{ral['English']}")
                 label.setStyleSheet(f"background-color: {ral['HEX']}")
-                classic_grid.addWidget(label, row, col)
+                label.setFixedSize(120, 120)
+                label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.classic_grid.addWidget(label, row, col)
 
 
 app = QApplication(sys.argv)
