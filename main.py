@@ -34,7 +34,7 @@ class Window(QWidget):
 
             # Прохожу по словарю с RAL и создаю label
             for index, ral in enumerate(ral_classic):
-                label = QLabel(self.classic_scroll_widget)
+                label = QLabel()
                 label.setObjectName(ral["RAL"].replace(" ", ""))
                 row = index // NUM_COLUMNS
                 col = index % NUM_COLUMNS
